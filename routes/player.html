@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <meta http-equiv='Content-Type' content='charset=UTF-8'>
+        <link rel= "stylesheet" href="style.css">
+        <script src = 'https://cdn.socket.io/socket.io-1.4.5.js'></script>
+    </head>
+    <body style = 'background : #222222;'>
+        <video id = 'video' poster='' style= 'top: 0; width : auto;
+        height : auto; float: left; z-index : -1; width: 75%; height: 80%;' controls='controls' preload='none' autoplay= 'autoplay'>
+            <source id ='url' src= 'http://www.tomodevel.jp/material/video/disneyTour.mp4' type='video/mp4' />
+        </video>
+        <div style = 'float: right;  width: 25%; height: 100%; background : #222222; color: #ffffff;'>
+            <div style = 'margin-top : 20; margin-left: 30; color: #ffffff; font-size: 30'>
+                라이브 talk
+            </div>
+            <div style = 'margin-top : 3; margin-left: 30; width: 134; height: 6; background : #08aa79 '></div>
+
+            <div id="chatField" style = 'height: 80%; margin-top: 50; margin-left: 30; overflow:scroll;'></div>
+
+            <div style = 'height: 15%; width: 75%; float: left;'>
+                <input id = "textField" type = 'text' placeholder = "대화 내용을 입력하세요." onkeypress="JavaScript:enterkey(this.form)"  style="color:#ffffff; font-size: 15pt; width : 100%; height: 60%; border:none; border-right:0px; border-top:0px; background-color: #333333">
+            </div>
+            <div>
+                <input type = 'button' value = '등록' onclick = 'add_chat()' style = 'color: #ffffff; font-size: 20pt; height: 90; width: 110; background-color: #08aa79; border: none;'></button>
+            </div>
+        </div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var totalMessages = '';
+
+        // 채팅 등록
+        function add_chat() {
+            var div = document.createElement('div');
+            var msg = document.getElementById('textField').value;
+            var currentDate = new Date();
+
+            if (msg) {
+                totalMessages += msg;
+                div.innerHTML = document.getElementById('chatField').innerHTML;
+                div.innerHTML = "<div id='bubble' class='bubble' style='width:85%;'><p id = 'label' class='label'>"+ msg +"</p><div class='tail'></div></div>"
+                div.id = currentDate;
+                document.getElementById('chatField').appendChild(div);
+                $('#textField').val('');
+            }
+        }
+
+        // 엔터 키 눌렀을 시 채팅 등록 버튼 호출
+        function enterkey() {
+            if (window.event.keyCode == 13) {
+                add_chat();
+            }
+        }
+        
+        document.getElementById('video').addEventListener('ended', function() {
+            $.post("http://localhost:3000/recommendVideo", { message: totalMessages },    
+                function(data){      
+                     console.log(data);   
+                }, "json");  
+        });
+
+    </script>
+</html>

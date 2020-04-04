@@ -1,0 +1,19 @@
+.bubble{
+  position : relative;
+}
+.bubble .label{
+  color : #ffffff;
+  background-color:#66aa11;
+  border-radius:5px;
+  padding:10px;
+}
+.bubble .tail{
+  left:100%;
+  border-right :15px solid transparent;
+  border-top:10px solid transparent;
+  border-left : 15px solid #66aa11;
+  border-bottom: 10px solid transparent;
+  position:absolute;
+  bottom: -20px;
+  width:0; height:0;
+}
